@@ -1,3 +1,3 @@
-module github.com/tswaler/go-course
+module github.com/tsawler/go-course
 
 go 1.16
