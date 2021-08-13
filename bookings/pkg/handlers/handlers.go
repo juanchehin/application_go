@@ -3,9 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/tsawler/go-course/pkg/config"
-	"github.com/tsawler/go-course/pkg/models"
-	"github.com/tsawler/go-course/pkg/render"
+	"github.com/tsawler/bookings/pkg/config"
+	"github.com/tsawler/bookings/pkg/models"
+	"github.com/tsawler/bookings/pkg/render"
 )
 
 // Repositorio usado para los controladores (handlers)
