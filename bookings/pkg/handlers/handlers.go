@@ -49,3 +49,18 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 		StringMap: stringMap,
 	})
 }
+
+//
+func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "search-availability.page.tmpl", &models.TemplateData{})
+}
+
+//
+func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "search-availability.page.tmpl", &models.TemplateData{})
+}
+
+//
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "contact.page.tmpl", &models.TemplateData{})
+}
