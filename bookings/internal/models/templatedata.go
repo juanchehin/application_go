@@ -1,13 +1,16 @@
 package models
 
-// Contiene datos enviados desde el controlador a la plantilla
+import "github.com/tsawler/bookings-app/internal/forms"
+
+// TemplateData holds data sent from handlers to templates
 type TemplateData struct {
 	StringMap map[string]string
 	IntMap    map[string]int
-	FloatMao  map[string]float32
+	FloatMap  map[string]float32
 	Data      map[string]interface{}
-	CRFToken  string
+	CSRFToken string
 	Flash     string
 	Warning   string
 	Error     string
+	Form      *forms.Form
 }
