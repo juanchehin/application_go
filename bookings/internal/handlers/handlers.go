@@ -61,7 +61,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 
 // PostReservation handles the posting of a reservation form
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	err := r.ParseForm() // Analiza el request que viene del formulario
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
