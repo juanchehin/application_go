@@ -39,6 +39,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// ======================================
+	// === Insertar una fila (row) ===
+	// ======================================
+	query := `insert into users (first_name,last_name) values ($1,$2)`
+	_, err = conn.Exec(query, "Jack", "Brown")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// ======================================
+	// === Acceder a las filas de las tablas ===
+	// ======================================
+	err = getAllRows(conn)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func getAllRows(conn *sql.DB) error {
