@@ -9,17 +9,19 @@ import (
 	"path/filepath"
 
 	"github.com/justinas/nosurf"
-	"github.com/tsawler/bookings-app/internal/config"
-	"github.com/tsawler/bookings-app/internal/models"
+	"github.com/tsawler/bookings/internal/config"
+	"github.com/tsawler/bookings/internal/models"
 )
 
 var functions = template.FuncMap{}
 
 var app *config.AppConfig
+
 var pathToTemplates = "./templates"
 
 // NewRenderer sets the config for the template package
 func NewRenderer(a *config.AppConfig) {
+	fmt.Println("Pasa 5.0")
 	app = a
 }
 
@@ -34,33 +36,49 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 
 // Template renders a template
 func Template(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) error {
+
 	var tc map[string]*template.Template
 
-	if app.UseCache {
-		// get the template cache from the app config
-		tc = app.TemplateCache
-	} else {
-		tc, _ = CreateTemplateCache()
+	fmt.Println("Pasa 5")
+	fmt.Println("la app es : ")
+	fmt.Println(app)
+	fmt.Println("Fin la app es : ")
+
+	if app != nil {
+		if app.UseCache {
+			// get the template cache from the app config
+			fmt.Println("Pasa 5 if")
+			tc = app.TemplateCache
+		} else { // App no tiene el TemplateCache creado, entonces lo creo
+			fmt.Println("Pasa 5 else")
+			tc, _ = CreateTemplateCache()
+		}
 	}
+	fmt.Println("Pasa 6")
+	fmt.Println("tc es : ")
+	fmt.Println(tc)
+	fmt.Println("tc[tmpl] es : ")
+	fmt.Println(tc[tmpl])
 
 	t, ok := tc[tmpl]
 	if !ok {
 		//log.Fatal("Could not get template from template cache")
+		fmt.Println("No se pudo crear el template cache")
 		return errors.New("could not get template from cache")
 	}
-
+	fmt.Println("Pasa 6.1")
 	buf := new(bytes.Buffer)
 
 	td = AddDefaultData(td, r)
 
 	_ = t.Execute(buf, td)
-
+	fmt.Println("Pasa 7")
 	_, err := buf.WriteTo(w)
 	if err != nil {
 		fmt.Println("error writing template to browser", err)
 		return err
 	}
-
+	fmt.Println("Pasa 8")
 	return nil
 
 }
