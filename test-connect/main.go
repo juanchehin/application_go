@@ -94,6 +94,26 @@ func main() {
 	}
 
 	log.Println("Query rows return : ", id, firstName, lastName)
+
+	// ======================================
+	// === Actualizo una fila  ===
+	// ======================================
+	query = `delete from users where id=$1`
+
+	_, err = conn.Exec(query, 5)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Delete a row!")
+
+	// ======================================
+	// === Acceder a las filas de las tablas ===
+	// ======================================
+	err = getAllRows(conn)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func getAllRows(conn *sql.DB) error {
