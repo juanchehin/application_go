@@ -77,6 +77,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// ======================================
+	// === Obtengo una fila por id ===
+	// ======================================
+	query = `select id,first_name,last_name from users where id = $1`
+
+	var firstName, lastName string
+	var id int
+
+	row := conn.QueryRow(query, 1)
+	err = row.Scan(&id, &firstName, &lastName)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Query rows return : ", id, firstName, lastName)
 }
 
 func getAllRows(conn *sql.DB) error {
