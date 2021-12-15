@@ -49,6 +49,27 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Println("Insert a row!")
+
+	// ======================================
+	// === Acceder a las filas de las tablas ===
+	// ======================================
+	err = getAllRows(conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// ======================================
+	// === Actualizo una fila  ===
+	// ======================================
+	stmt := `update users set first_name = $1 where id=$2`
+	_, err = conn.Exec(stmt, "Jackie", 2)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Updated a row!")
+
 	// ======================================
 	// === Acceder a las filas de las tablas ===
 	// ======================================
