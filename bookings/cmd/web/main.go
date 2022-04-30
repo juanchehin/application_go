@@ -20,10 +20,11 @@ var app config.AppConfig
 var session *scs.SessionManager
 
 func main() {
-	err := run()
+	db, err := run()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.SQL.Close()
 
 	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
 
@@ -38,7 +39,7 @@ func main() {
 	log.Fatal(err)
 }
 
-func run() error {
+func run(*driver.DB, error) {
 	fmt.Println("Hello World!")
 
 	// gob.Register(models.Reservation{})
@@ -53,12 +54,19 @@ func run() error {
 
 	app.Session = session
 
+	// Conexion a la BD
+	log.Println("Conectando a la BD...")
+	db, err = driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=postgres password=postgres")
+	if err != nil {
+		log.Fatal("Error en conexion a la BD")
+	}
+
 	tc, err := render.CreateTemplateCache()
 
 	if err != nil {
 		log.Fatal("no se pudo crear template cache en main.go", err)
 		fmt.Println("Pasa 0")
-		return err
+		return nil, err
 	}
 	fmt.Println("Pasa 1")
 
@@ -71,5 +79,5 @@ func run() error {
 	render.NewRenderer(&app)
 	// helpers.NewHelpers(&app)
 
-	return nil
+	return db, nil
 }
