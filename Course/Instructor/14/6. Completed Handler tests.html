@@ -1,0 +1,15 @@
+<p>You will find the complete source code, including tests for the handlers, attached to the course resources for this lecture. The tests provide 100% coverage for the handlers package.</p><p><br></p><p><strong>Important:&nbsp;Things to note</strong></p><p>As is usually the case, writing tests to cover all the cases revealed a&nbsp; rough edge or two in the code. </p><p>In the <strong>ChooseRoom</strong> handler, we have code like this:</p><pre class="prettyprint linenums">roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+if err != nil {
+ log.Println(err)
+ m.App.Session.Put(r.Context(), "error", "missing url parameter")
+ http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+ return
+}</pre><p><br></p><p>That convenience function offered by chi, chi.URLPara(r, "id") is really, really hard to test. In truth, we don't even need to use it, since we can parse the URL and find the id on our own, using this code:</p><pre class="prettyprint linenums">// changed to this, so we can test it more easily
+// split the URL up by /, and grab the 3rd element
+exploded := strings.Split(r.RequestURI, "/")
+roomID, err := strconv.Atoi(exploded[2])
+if err != nil {
+   m.App.Session.Put(r.Context(), "error", "missing url parameter")
+   http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+   return
+}</pre><p><br></p><p>In the code above, we use the strings package from the standard library to "explode" the URL into a slice of strings. Then, we grab the third element of that slice (position 2, since slices start counting from 0), and parse that into an int.</p><p>In your test for ChooseRoom, you will want to set the URL on your request as follows:</p><pre class="prettyprint linenums">req.RequestURI = "/choose-room/1"</pre><p><br></p><p>This is exactly why we write tests!</p>
