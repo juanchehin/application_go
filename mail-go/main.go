@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"mail-go/models"
+	"time"
+	"log"
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
 func main() {
 	fmt.Println("Hello, World!")
 
-	mailChain := make(chan models.MailData)
+	mailChan := make(chan models.MailData)
 	listenForMail()
 
 	msg := models.MailData{
@@ -20,7 +22,7 @@ func main() {
 	}
 
 	// app.MailChan <- msg
-	MailChan <- msg
+	mailChan <- msg
 }
 
 func listenForMail() {
@@ -36,7 +38,8 @@ func listenForMail() {
 }
 
 func sendMsg(m models.MailData) {
-	server : mail.NewSMTOClient()
+	
+	server := mail.NewSMTPClient()
 	server.Hoost = "localhost"
 	server.Port = 1025
 	server.KeepAlive = false
@@ -45,7 +48,8 @@ func sendMsg(m models.MailData) {
 
 	client, err := server.Connect()
 	if err != nil {
-		errorLog.Println(err)
+		// errorLog.Println(err)
+		log.Println(err)
 	}
 
 	email := mail.NewMSG()
