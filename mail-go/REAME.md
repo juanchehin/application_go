@@ -1,0 +1,1 @@
+Esta es una carpeta separada del proyecto,realiza la prueba de envio de mails
