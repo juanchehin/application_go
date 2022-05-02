@@ -10,6 +10,17 @@ func main() {
 	fmt.Println("Hello, World!")
 
 	mailChain := make(chan models.MailData)
+	listenForMail()
+
+	msg := models.MailData{
+		To: "chehin238@gmail.com",
+		From: "sgmtucuman",
+		Subject: "Asunto - Golang",
+		Content: "",
+	}
+
+	// app.MailChan <- msg
+	MailChan <- msg
 }
 
 func listenForMail() {

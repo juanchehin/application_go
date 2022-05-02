@@ -1,1 +1,2 @@
-Esta es una carpeta separada del proyecto,realiza la prueba de envio de mails
+-Esta es una carpeta separada del proyecto,realiza la prueba de envio de mails
+- Se puede usar MailHog (https://github.com/mailhog/MailHog)
