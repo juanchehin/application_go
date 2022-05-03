@@ -2,43 +2,57 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"mail-go/internal/config"
 	"mail-go/models"
 	"time"
-	"log"
+
 	mail "github.com/xhit/go-simple-mail/v2"
 )
+
+var app config.AppConfig
 
 func main() {
 	fmt.Println("Hello, World!")
 
-	mailChan := make(chan models.MailData)
+	mailChan := make(chan models.MailData) // Creo el canal
+	app.MailChan = mailChan
+
+	listenForMail()
+
+	// app.MailChan <- msg
+	// mailChan <- msg // Envio 'msg' al channel 'mailChan'
+
+	defer close(app.MailChan) // Postergar hasta que se cierre main()
 	listenForMail()
 
 	msg := models.MailData{
-		To: "chehin238@gmail.com",
-		From: "sgmtucuman",
+		To:      "chehin238@gmail.com",
+		From:    "sgmtucuman",
 		Subject: "Asunto - Golang",
 		Content: "",
 	}
 
-	// app.MailChan <- msg
-	mailChan <- msg
+	app.MailChan <- msg
 }
 
 func listenForMail() {
+	// mailChan := make(chan models.MailData) // Creo el canal
 	// Funcion asincronica (se ejecuta en segundo plano)
+	// Bucle infinito en para levantar el server
 	go func() {
 		for {
-			// msg := <- app.MailChan
+			msg := <-app.MailChan // Recibo desde 'mailChan' y asigno a 'msg'
 			// msg := chan models.MailData
-			msg := make(chan models.MailData)
+			// msg := make(chan models.MailData)
+			fmt.Println("msg ..", msg)
 			sendMsg(msg)
 		}
-	}
+	}()
 }
 
 func sendMsg(m models.MailData) {
-	
+
 	server := mail.NewSMTPClient()
 	server.Host = "localhost"
 	server.Port = 1025
